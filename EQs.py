@@ -1,0 +1,61 @@
+import math
+import numpy as np
+import pickle
+
+
+# This realies on all my arrays being the same length
+AOA_list = np.array([5.74,5.72,5.74]) # Angle of Attack in degrees
+CL_list = np.array([.0806*a+.2495 for a in AOA_list]) # Lift Coefficient
+CD_list = np.array([.0271+.0534*x**2 for x in CL_list]) # Drag oefficient
+
+#Model Constants
+V = 95.33 # Velocity in ft/s
+RHO = 0.002378 # Air Density in slugs/ft^3
+S = 7.44 # Wing Area in ft^2
+W = 15 # Weight in lbs
+
+# Initializing array to store results
+N_mean_list = np.zeros(len(CL_list))
+A_mean_list = np.zeros(len(CL_list))
+data = []
+
+#Creates a range to run through all values of input arrays
+for i in range(len(CL_list)):
+    
+    # Getting current values from input arrays
+    CL = CL_list[i] 
+    CD = CD_list[i]
+    AOA = AOA_list[i]
+    
+    #Converts degrees to radians
+    A = np.radians(AOA) # Angle of Attack in radians
+
+    # Equations to get L and D
+    L = 0.5 * RHO * V**2 * S * CL # Lift in lbs
+    D = 0.5 * RHO * V**2 * S * CD # Drag in lbs
+
+    # Equations to get N_aero and A_aero
+    N_aero = L * math.cos(A) + D * math.sin(A) # Aerodynamic Normal Force in lbs
+    A_aero = - L * math.sin(A) + D * math.cos(A) # Aerodynamic Axial Force in lbs
+
+    # Equations to get N_meas and A_meas
+    N_meas = N_aero + W * math.sin(A) # Measured Normal Force in lbs
+    A_meas = A_aero + W * math.cos(A) # Measured Axial Force in lbs
+
+    # Append results to lists
+    N_mean_list[i] = N_meas
+    A_mean_list[i] = A_meas
+
+    #Stores all values as data
+    data.append({'NF': N_meas, 'AF': A_meas, 'SF': 0, 'PM': 0, 'RM': 0,'YM': 0, 'Theta': AOA, 'Q': 0.5 * RHO * V**2, 'S': S, 'W': W})
+
+testinfo = {'S': S, 'W': W}
+
+# Wind tunnel speed and angles (AOA, model constants, dynamic pressure (q), desity sea level)
+#saves the dictioary as a pickle file 
+with open("wind_forces_inputs.pkl", "wb") as f: 
+    pickle.dump((data, testinfo), f)
+
+#prints the results to check accuracy
+print(N_mean_list)
+print(A_mean_list)
