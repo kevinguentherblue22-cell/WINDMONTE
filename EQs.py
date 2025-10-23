@@ -4,7 +4,7 @@ import pickle
 
 
 # This realies on all my arrays being the same length
-AOA_list = [-2,-1,0,1,2,3,4,5,6,7] # Angle of Attack in degrees
+AOA_list = [-2,-1,0,1,2,3,4,5,6,7] # Angle of Attack in degrees (Very small values, 100)
 CL_list = [.0806*a+.2495 for a in AOA_list] # Lift Coefficient
 CD_list = [.0271+.0534*x**2 for x in CL_list] # Drag oefficient
 

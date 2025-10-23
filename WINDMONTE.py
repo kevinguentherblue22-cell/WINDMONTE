@@ -37,7 +37,7 @@ tic = time.time()
 #region 1: Data input and MCM setup (Check to ensure all data, parameters, and error sources are correct for analysis)
 
 # 1.1 Input MCM parameters
-M = 1000  # Number of MCM trials to run.  Recommend >500 
+M = 1000  # Number of MCM trials to run.  Recommend >500 ''change M to 100, or plot everytenth, change name of output file'''
 outputfile = 'output_data.pkl'  # specify output file
 UPCs = True  # Set to True to compute the UPCs
 UPC_M = 100  # Set the number of trials to simulate for each error source in calculating UPCs.  Recommend >100.
