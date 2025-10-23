@@ -1,6 +1,7 @@
 # WINDMONTE is licensed under GNU GPL v3, see COPYING.txt
 
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import utilities
@@ -41,7 +42,7 @@ outputfile = 'output_data.pkl'  # specify output file
 UPCs = True  # Set to True to compute the UPCs
 UPC_M = 100  # Set the number of trials to simulate for each error source in calculating UPCs.  Recommend >100.
 
-s_flag = 'DCR'  # Choose methodology for random uncertainty: 
+s_flag = 'None'  # Choose methodology for random uncertainty: 
     # "P" to propagate from variable U_random, 
     # "DCR" to determine VOI uncertainty from direct comparison of replicate data.  Must have replicate data and a function defined to populate that data.
     # "None" to only evaluate systematic uncertainty
@@ -62,9 +63,10 @@ This version has 3 options to load data:
 """
 
 # Uncomment to load data from .pkl file
-Load_source = 'inputdata_example.pkl'
+#Load_source = 'inputdata_example.pkl'
+Load_source = 'wind_forces_inputs.pkl'
 with open(Load_source, 'rb') as f:  
-    data,data_multisample,testinfo = pickle.load(f)
+    data,testinfo = pickle.load(f)
 
 # Uncomment to load data from .csv file
 """ Load_source = 'inputdata_example.csv'
@@ -84,15 +86,8 @@ follow the format used in the example:
     - source: label the source for plotting later
     - units: list the units, must match the units in the 'data' variable nominal values for each measurement the error source applies to
 """
-U_systematic.add_error_source(measurements=['Psi'],distribution='norm',params=[0,0.0295],source='b_Psi',units='deg')
-U_systematic.add_error_source(measurements=['Phi'],distribution='norm',params=[0,0.025],source='b_Phi',units='deg')
-U_systematic.add_error_source(measurements=['Pstat'],distribution='norm',params=[0,0.005],source='b_P_stat',units='psf')
-U_systematic.add_error_source(measurements=['Ptot'],distribution='norm',params=[0,0.005],source='b_P_tot',units='psf')
-U_systematic.add_error_source(measurements=['Baro'],distribution='norm',params=[0,0.025],source='b_P_baro',units='psf')
-U_systematic.add_error_source(measurements=['Temp'],distribution='norm',params=[0,0.05],source='b_T',units='deg F')
-U_systematic.add_error_source(measurements=['TempT'],distribution='norm',params=[0,0.05],source='b_T0',units='deg F')
-U_systematic.add_error_source(measurements=['Theta'],distribution='norm',params=[0,0.009/2],source='b_Theta',units='deg')
-U_systematic.add_error_source(measurements=['Qset','Qact'],distribution='norm',params=[0,0.14/2],source='b_Qcal',units='psf')
+U_systematic.add_error_source(measurements=['AOA'],distribution='norm',params=[0,0.009/2],source='b_AOA',units='deg')
+U_systematic.add_error_source(measurements=['Q'],distribution='norm',params=[0,0.14/2],source='b_Q',units='psf')
 U_systematic.add_error_source(measurements=['NF'],distribution='norm',params=[0,0.3/2],source='b_NF',units='lbf')
 U_systematic.add_error_source(measurements=['SF'],distribution='norm',params=[0,0.3/2],source='b_SF',units='lbf')
 U_systematic.add_error_source(measurements=['AF'],distribution='norm',params=[0,0.06/2],source='b_AF',units='lbf')
@@ -106,8 +101,8 @@ replicate_data = {} # define the replicate data variable
 
 if s_flag == 'P':
     # add random elemental error sources to propagate with MCM
-    U_random.add_error_source(measurements=['Theta'],distribution='norm',params=[0,0.0088],source='s_Q-flex',units='deg')
-    U_random.add_error_source(measurements=['Qset','Qact'],distribution='norm',params=[0,0.06],source='s_Q',units='psf')
+    U_random.add_error_source(measurements=['AOA'],distribution='norm',params=[0,0.0088],source='s_AOA',units='deg')
+    U_random.add_error_source(measurements=['Q'],distribution='norm',params=[0,0.06],source='s_Q',units='psf')
     U_random.add_error_source(measurements=['NF'],distribution='norm',params=[0,0.077],source='s_NF',units='lbf')  
     U_random.add_error_source(measurements=['SF'],distribution='norm',params=[0,0.031],source='s_SF',units='lbf')
     U_random.add_error_source(measurements=['AF'],distribution='norm',params=[0,0.038],source='s_AF',units='lbf')
@@ -162,8 +157,8 @@ print("Simulation data saved to file: {}".format(outputfile))
 
 # Confidence level for expanding the uncertainty intervals is 95% by default and set when defining the VOI class in utilities.py
 
-# Running GUI is the default
-os.system("python WINDMONTE_GUI.py")
+# Running GUI is the default — use the same Python interpreter to ensure venv packages are available
+os.system(f'"{sys.executable}" WINDMONTE_GUI.py')
 
 # or plot directly using plot behaviors for the TestRun, DataPoint, or VOI variable class
 """ Plot_VOIs = ['CD', 'CY','CL','Cl','Cm','Cn']

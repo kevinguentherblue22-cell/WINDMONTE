@@ -4,9 +4,9 @@ import pickle
 
 
 # This realies on all my arrays being the same length
-AOA_list = np.array([5.74,5.72,5.74]) # Angle of Attack in degrees
-CL_list = np.array([.0806*a+.2495 for a in AOA_list]) # Lift Coefficient
-CD_list = np.array([.0271+.0534*x**2 for x in CL_list]) # Drag oefficient
+AOA_list = [-2,-1,0,1,2,3,4,5,6,7] # Angle of Attack in degrees
+CL_list = [.0806*a+.2495 for a in AOA_list] # Lift Coefficient
+CD_list = [.0271+.0534*x**2 for x in CL_list] # Drag oefficient
 
 #Model Constants
 V = 95.33 # Velocity in ft/s
@@ -28,7 +28,7 @@ for i in range(len(CL_list)):
     AOA = AOA_list[i]
     
     #Converts degrees to radians
-    A = np.radians(AOA) # Angle of Attack in radians
+    A = float(np.radians(AOA)) # Angle of Attack in radians
 
     # Equations to get L and D
     L = 0.5 * RHO * V**2 * S * CL # Lift in lbs
@@ -42,14 +42,10 @@ for i in range(len(CL_list)):
     N_meas = N_aero + W * math.sin(A) # Measured Normal Force in lbs
     A_meas = A_aero + W * math.cos(A) # Measured Axial Force in lbs
 
-    # Append results to lists
-    N_mean_list[i] = N_meas
-    A_mean_list[i] = A_meas
-
     #Stores all values as data
     data.append({'NF': N_meas, 'AF': A_meas, 'SF': 0, 'PM': 0, 'RM': 0,'YM': 0, 'Theta': AOA, 'Q': 0.5 * RHO * V**2, 'S': S, 'W': W})
 
-testinfo = {'S': S, 'W': W}
+testinfo = {'S': S, 'W': W, 'RunNum': 1}
 
 # Wind tunnel speed and angles (AOA, model constants, dynamic pressure (q), desity sea level)
 #saves the dictioary as a pickle file 
@@ -57,5 +53,5 @@ with open("wind_forces_inputs.pkl", "wb") as f:
     pickle.dump((data, testinfo), f)
 
 #prints the results to check accuracy
-print(N_mean_list)
-print(A_mean_list)
+print('end')
+
