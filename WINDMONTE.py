@@ -86,8 +86,8 @@ follow the format used in the example:
     - source: label the source for plotting later
     - units: list the units, must match the units in the 'data' variable nominal values for each measurement the error source applies to
 """
-U_systematic.add_error_source(measurements=['AOA'],distribution='norm',params=[0,0.009/2],source='b_AOA',units='deg')
-U_systematic.add_error_source(measurements=['Q'],distribution='norm',params=[0,0.14/2],source='b_Q',units='psf')
+U_systematic.add_error_source(measurements=['AOA'],distribution='norm',params=[0,0.2],source='b_AOA',units='deg')
+U_systematic.add_error_source(measurements=['Q'],distribution='norm',params=[0,0.5],source='b_Q',units='psf')
 U_systematic.add_error_source(measurements=['NF'],distribution='norm',params=[0,0.3/2],source='b_NF',units='lbf')
 U_systematic.add_error_source(measurements=['SF'],distribution='norm',params=[0,0.3/2],source='b_SF',units='lbf')
 U_systematic.add_error_source(measurements=['AF'],distribution='norm',params=[0,0.06/2],source='b_AF',units='lbf')
@@ -101,8 +101,8 @@ replicate_data = {} # define the replicate data variable
 
 if s_flag == 'P':
     # add random elemental error sources to propagate with MCM
-    U_random.add_error_source(measurements=['AOA'],distribution='norm',params=[0,0.0088],source='s_AOA',units='deg')
-    U_random.add_error_source(measurements=['Q'],distribution='norm',params=[0,0.06],source='s_Q',units='psf')
+    U_random.add_error_source(measurements=['AOA'],distribution='norm',params=[0,0.05],source='s_AOA',units='deg')
+    U_random.add_error_source(measurements=['Q'],distribution='norm',params=[0,0.5],source='s_Q',units='psf')
     U_random.add_error_source(measurements=['NF'],distribution='norm',params=[0,0.077],source='s_NF',units='lbf')  
     U_random.add_error_source(measurements=['SF'],distribution='norm',params=[0,0.031],source='s_SF',units='lbf')
     U_random.add_error_source(measurements=['AF'],distribution='norm',params=[0,0.038],source='s_AF',units='lbf')
