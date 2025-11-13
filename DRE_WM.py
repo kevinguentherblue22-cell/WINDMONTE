@@ -91,7 +91,8 @@ def DREs(input_data, G=None):
         q = e.get('Q', 0)
         N_meas = e.get('NF', 0)
         A_meas = e.get('AF', 0)
-        Theta = e.get('Theta', 0)
+        # Ensure Theta is a plain python float in degrees (input data uses degrees)
+        Theta = float(e.get('Theta', 0))
         A_rad = math.radians(Theta)
 
         N_aero = N_meas - W_local * math.sin(A_rad)
