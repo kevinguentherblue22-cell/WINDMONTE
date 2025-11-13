@@ -85,9 +85,10 @@ def DREs(input_data, G=None):
     # allow G to override S and W, otherwise use defaults
     S_local = G.get('S') if isinstance(G, dict) and 'S' in G else S_default
     W_local = G.get('W') if isinstance(G, dict) and 'W' in G else W_default
-    q = 0.5 * RHO_default * V_default**2
 
     for e in input_data:
+        # dynamic (per-point) quantities should be read from the input dict here
+        q = e.get('Q', 0)
         N_meas = e.get('NF', 0)
         A_meas = e.get('AF', 0)
         Theta = e.get('Theta', 0)
