@@ -77,10 +77,10 @@ def DREs(input_data, G=None):
 
     # Minimal local defaults (used if G is not provided). These mirror
     # the constants used previously in the module's example code.
-    V_default = 95.33
-    RHO_default = 0.002378
-    S_default = 7.44
-    W_default = 15
+    V = 110 # Velocity in ft/s
+    RHO = 0.00242 # Air Density in slugs/ft^3
+    S = 0.77 # Wing Area in ft^2
+    W = 10 # Weight in lbs
 
     # allow G to override S and W, otherwise use defaults
     S_local = G.get('S') if isinstance(G, dict) and 'S' in G else S_default
